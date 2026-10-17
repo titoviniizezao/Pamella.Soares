@@ -1,0 +1,276 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Convite para Pamella</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito:wght@500;700;800&display=swap">
+<style>
+  /* Layout: uma pergunta grande alinhada à esquerda, Sim fixo ao lado de um Não que foge do toque e do mouse. */
+  :root {
+    --bg: #fbeff3;
+    --surface: #fff8fb;
+    --fg: #3b1727;
+    --muted: #8a5a6c;
+    --line: #efc9d6;
+    --accent: #d6336c;
+    --accent-fg: #ffffff;
+    --display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+    --body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1c0e16;
+      --surface: #2a1521;
+      --fg: #fde9f1;
+      --muted: #c397aa;
+      --line: #4a2638;
+      --accent: #ff6b9d;
+      --accent-fg: #2a0a18;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1c0e16;
+    --surface: #2a1521;
+    --fg: #fde9f1;
+    --muted: #c397aa;
+    --line: #4a2638;
+    --accent: #ff6b9d;
+    --accent-fg: #2a0a18;
+    color-scheme: dark;
+  }
+
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--body);
+    font-size: 18px;
+    line-height: 1.5;
+    padding-block: 24px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+  main {
+    width: 100%;
+    max-width: 34rem;
+    min-width: 0;
+  }
+  .eyebrow {
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 9vw, 3.8rem);
+    line-height: 1.05;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+  .hint {
+    color: var(--muted);
+    margin: 0 0 2rem;
+    min-height: 1.6em;
+  }
+  .buttons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  button {
+    font-family: var(--body);
+    font-size: 1.1rem;
+    font-weight: 800;
+    border-radius: 999px;
+    padding: 0.85rem 2.2rem;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  button:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
+  #yes {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 8px 24px -10px var(--accent);
+  }
+  #yes:hover { filter: brightness(1.06); }
+  #yes:active { transform: translateY(1px); }
+  #no {
+    background: var(--surface);
+    color: var(--fg);
+    border: 2px solid var(--line);
+  }
+  #no.flying {
+    position: fixed;
+    z-index: 20;
+    margin: 0;
+    transition: left 0.22s cubic-bezier(.3,1.4,.5,1), top 0.22s cubic-bezier(.3,1.4,.5,1);
+  }
+  #noslot { display: inline-block; }
+
+  #result h2 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 8vw, 3.4rem);
+    line-height: 1.05;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+  #result p { color: var(--muted); margin: 0; max-width: 28rem; }
+
+  .heart {
+    position: fixed;
+    bottom: -2rem;
+    color: var(--accent);
+    pointer-events: none;
+    z-index: 30;
+    animation: rise linear forwards;
+  }
+  @keyframes rise {
+    to { transform: translateY(-110vh) rotate(25deg); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #no.flying { transition: none; }
+    .heart { display: none; }
+  }
+</style>
+
+<main>
+  <section id="ask">
+    <p class="eyebrow">Uma pergunta rápida</p>
+    <h1><em>Pamella</em>, você aceita sair comigo?</h1>
+    <p class="hint" id="hint">Pode pensar com carinho.</p>
+    <div class="buttons">
+      <button id="yes" type="button">Sim</button>
+      <span id="noslot"><button id="no" type="button">Não</button></span>
+    </div>
+  </section>
+
+  <section id="result" hidden>
+    <p class="eyebrow">Resposta recebida</p>
+    <h2>Eu sabia que você ia aceitar!!</h2>
+    <p>Se não aceitasse, eu iria lhe processar. Agora é só esperar dois meses.</p>
+  </section>
+</main>
+
+<script>
+(function () {
+  var yes = document.getElementById('yes');
+  var no = document.getElementById('no');
+  var slot = document.getElementById('noslot');
+  var hint = document.getElementById('hint');
+  var ask = document.getElementById('ask');
+  var result = document.getElementById('result');
+  var flying = false;
+  var done = false;
+  var tries = 0;
+  var lines = [
+    'Ei, volta aqui!',
+    'Quase! Tenta de novo.',
+    'Esse botão é meio tímido.',
+    'Ele não gosta de ser clicado.',
+    'Você já sabe qual é a resposta certa.',
+    'Que tal tentar o Sim?'
+  ];
+
+  function rect(el) { return el.getBoundingClientRect(); }
+
+  function overlaps(x, y, w, h, r, pad) {
+    return x < r.right + pad && x + w > r.left - pad && y < r.bottom + pad && y + h > r.top - pad;
+  }
+
+  function dodge(px, py) {
+    if (done) return;
+    var r = rect(no);
+    if (!flying) {
+      slot.style.width = r.width + 'px';
+      slot.style.height = r.height + 'px';
+      no.classList.add('flying');
+      no.style.left = r.left + 'px';
+      no.style.top = r.top + 'px';
+      flying = true;
+      void no.offsetWidth;
+    }
+    var w = no.offsetWidth, h = no.offsetHeight, m = 16;
+    var maxX = Math.max(m, window.innerWidth - w - m);
+    var maxY = Math.max(m, window.innerHeight - h - m);
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    if (typeof px !== 'number') { px = cx; py = cy; }
+    var yr = rect(yes);
+    var best = null, bestD = -1;
+    for (var i = 0; i < 60; i++) {
+      var x = m + Math.random() * (maxX - m);
+      var y = m + Math.random() * (maxY - m);
+      var d = Math.hypot(x + w / 2 - px, y + h / 2 - py);
+      if (overlaps(x, y, w, h, yr, 20)) continue;
+      if (d > bestD) { bestD = d; best = { x: x, y: y }; }
+      if (d > 220) break;
+    }
+    if (!best) best = { x: maxX, y: maxY };
+    no.style.left = best.x + 'px';
+    no.style.top = best.y + 'px';
+    hint.textContent = lines[Math.min(tries, lines.length - 1)];
+    tries++;
+  }
+
+  no.addEventListener('pointerenter', function (e) { dodge(e.clientX, e.clientY); });
+  no.addEventListener('pointerdown', function (e) { e.preventDefault(); dodge(e.clientX, e.clientY); });
+  no.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    var t = e.touches[0];
+    dodge(t.clientX, t.clientY);
+  }, { passive: false });
+  no.addEventListener('click', function (e) { e.preventDefault(); dodge(); });
+  no.addEventListener('focus', function () { dodge(); });
+
+  document.addEventListener('pointermove', function (e) {
+    if (done || e.pointerType !== 'mouse') return;
+    var r = rect(no);
+    var d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+    if (d < Math.max(r.width, r.height) / 2 + 40) dodge(e.clientX, e.clientY);
+  });
+
+  window.addEventListener('resize', function () {
+    if (!flying || done) return;
+    var w = no.offsetWidth, h = no.offsetHeight, m = 16;
+    var x = Math.min(parseFloat(no.style.left) || m, Math.max(m, window.innerWidth - w - m));
+    var y = Math.min(parseFloat(no.style.top) || m, Math.max(m, window.innerHeight - h - m));
+    no.style.left = x + 'px';
+    no.style.top = y + 'px';
+  });
+
+  function hearts() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (var i = 0; i < 26; i++) {
+      var s = document.createElement('span');
+      s.className = 'heart';
+      s.textContent = '♥';
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.fontSize = (1 + Math.random() * 1.8) + 'rem';
+      s.style.animationDuration = (3 + Math.random() * 3) + 's';
+      s.style.animationDelay = (Math.random() * 1.2) + 's';
+      document.body.appendChild(s);
+      setTimeout(function (el) { el.remove(); }.bind(null, s), 8000);
+    }
+  }
+
+  yes.addEventListener('click', function () {
+    done = true;
+    no.hidden = true;
+    ask.hidden = true;
+    result.hidden = false;
+    hearts();
+  });
+})();
+</script>
+
+</body></html>
